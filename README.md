@@ -68,7 +68,9 @@ README.md		development-document	docker			docker-compose.yml	src
 今回の共同開発で作成するアプリは実際にリリースすることはないですが、この「重要な情報をGitHubに上げてはならない」ということを覚えておいていただきたく、このような仕様にしています。<br>
 
 ということで`.env`を作成します。<br>
-`$ touch .env`でもいいですし、エディター上でファイルを作成してもらっても構いません。
+`$ touch .env`でもいいですし、エディター上でファイルを作成してもらっても構いません。<br>
+
+`.env`に以下を追記ください。
 
 ```
 DATABASE_NAME=任意
@@ -108,7 +110,7 @@ Creating yanbaru-qiita_web_1 ... done
 
 これでDockerを使ったLEMP環境の構築は完了です。
 
-#　DBの接続を確認
+# DBの接続を確認
 
 MySQlのクライアントツールである`Sequel Pro`をインストールします。<br>
 
