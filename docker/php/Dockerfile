@@ -1,7 +1,6 @@
 FROM php:7.4-fpm
 
 # composerをインストール
-# これでLaravelが使えるようになります
 COPY --from=composer:1.10 /usr/bin/composer /usr/bin/composer
 
 # npmインストール
