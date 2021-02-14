@@ -9,10 +9,6 @@
 |DBサーバー|MySQL|
 |アプリケーション|PHP|
 
-詳細はこちらの記事でまとめておりますので、下記手順を実施する前に必ず読んでください。（Vue.jsの部分は不要です）<br>
-- [絶対に失敗しないDockerでLaravel+Vueの実行環境（LEMP環境）を構築する方法〜前編〜](https://qiita.com/shimotaroo/items/29f7878b01ee4b99b951)
-- [絶対に失敗しないDockerでLaravel6.8+Vueの実行環境（LEMP環境）を構築する方法〜後編〜](https://qiita.com/shimotaroo/items/679104b7e00dd9f89907)
-
 ## DockerとDocker Composeを使えるようにする
 
 こちらの記事からDocker fo Macをインストールしてください。<br>
@@ -25,7 +21,7 @@ Dockerについてはこちらの記事を必ず一度読んでおいてくだ�
 
 ```
 $ cd
-$pwd
+$ pwd
 /Users/{ご自身のユーザー名}
 ```
 ## リポジトリをクローン
@@ -52,7 +48,7 @@ README.md		development-document	docker			docker-compose.yml	src
   db:
     image: mysql:5.7
     ports:
-      - '6306:3306'
+      - '3306:3306'
     environment:
       MYSQL_DATABASE: ${DATABASE_NAME}
       MYSQL_USER: ${USER_NAME}
@@ -70,6 +66,14 @@ README.md		development-document	docker			docker-compose.yml	src
 ということで`.env`を作成します。<br>
 `$ touch .env`でもいいですし、エディター上でファイルを作成してもらっても構いません。<br>
 
+ディレクトリ構成的にこの状態になればOKです。
+
+```
+$ ls -a
+.			.env			.gitignore		development-document	docker-compose.yml
+..			.git			README.md		docker			src
+```
+
 `.env`に以下を追記ください。
 
 ```
@@ -83,7 +87,51 @@ ROOT_PASSWORD=任意
 ここで設定した値が`docker-compose.yml`の`${****}`で読み込まれます。<br>
 
 なお、`.gitigonre`ファイルで`.env`をGit管理下から外しています。<br>
-（間違えて`.env`をGitHubにpushしないようにしてください）
+（間違えて`.env`をGitHubにpushしないようにしてください）<br>
+
+参考：[docker-compose.ymlで.envファイルに定義した環境変数を使う](https://kitigai.hatenablog.com/entry/2019/05/08/003000)
+
+## コンテナのポート番号の確認
+
+`docker-compose.yml`の`web`コンテナ
+
+```yml
+  web:
+    image: nginx:1.18
+    ports:
+      - '80:80'
+    depends_on:
+      - app
+    volumes:
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./src/:/var/www/html
+```
+
+'db'コンテナ
+
+```yml
+  db:
+    image: mysql:5.7
+    ports:
+      - '3306:3306'
+    environment:
+      MYSQL_DATABASE: ${DATABASE_NAME}
+      MYSQL_USER: ${USER_NAME}
+      MYSQL_PASSWORD: ${PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${ROOT_PASSWORD}
+      TZ: 'Asia/Tokyo'
+    volumes:
+      - docker-volume:/var/lib/mysql
+```
+
+のローカル側のポート番号（portsの:の左側の番号）をご自身の別のDocker環境で使っている場合は適宜
+
+- web：88、8000、8888
+- db：3307、4306、5306、
+
+などに変更してみてください。<br>
+
+初めてDockerを使う方や他にDockerコンテナを起動させていない方はデフォルトから変更しなくても問題なく環境構築できます。
 
 ## Dockerイメージのビルド & Dockerコンテナの起動
 
@@ -163,7 +211,9 @@ README.md		development-document	docker			docker-compose.yml	src
 $ cd src
 ```
 
-既存の`.env.example`を複製して`.env`という名称に変更してください。（`.env.example`と`.env`が両方できる状態になります）
+既存の`.env.example`を複製して`.env`という名称に変更してください。（`.env.example`と`.env`が両方できる状態になります）<br>
+
+※srcディレクトリ直下に`.env`があればOKです。Docker環境用の`.env`とは別ファイルですのでご注意ください。
 
 ## .env編集
 
@@ -190,7 +240,7 @@ DB_PASSWORD=.env(Docker環境用)のPASSWORD
 
 ```
 $ cd ..
-$ docker-compose exe app bash
+$ docker-compose exec app bash
 ```
 
 Composerで必要なパッケージをインストールします。<br>
@@ -219,10 +269,14 @@ $ php artisan key:generate
 
 これでDocker×Laravelの環境構築は完了です。
 
-# 共同開発資料
+## 参考
+
+- [絶対に失敗しないDockerでLaravel+Vueの実行環境（LEMP環境）を構築する方法〜前編〜](https://qiita.com/shimotaroo/items/29f7878b01ee4b99b951)
+- [絶対に失敗しないDockerでLaravel6.8+Vueの実行環境（LEMP環境）を構築する方法〜後編〜](https://qiita.com/shimotaroo/items/679104b7e00dd9f89907)
+## 共同開発資料
 
 `development-document`ディレクトリに以下のファイルがありますのでそちらを確認いただきチームメンバーと協力して進めてください。
 
 - yanbaru-qiita.drawio：ER図
-- ：画面定義書
-- ：共同開発タスク手順書
+- screen-definition.xlsx：画面定義書
+- work-procedure.md：共同開発タスク手順書
