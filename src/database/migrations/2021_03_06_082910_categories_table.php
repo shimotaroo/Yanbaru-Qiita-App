@@ -14,8 +14,11 @@ class CategoriesTable extends Migration
     public function up()
     {
         Schema::create('categories', function (Blueprint $table) {
+            $table->id();
+            $table->dateTime('created_at');
+            $table->dateTime('updated_at');
+            $table->string('name');
             
-
         });
     }
 
@@ -26,6 +29,6 @@ class CategoriesTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('categories');
     }
 }
