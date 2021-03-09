@@ -14,11 +14,12 @@ class CategoriesTable extends Migration
     public function up()
     {
         Schema::create('categories', function (Blueprint $table) {
-            $table->id();
+            $table->biginteger('user_id')->unsigned()->nullable();
+            $table->foreign('user_id')->references('id')->on('users')->ondelete('cascade');
+            $table->bigIncrements('id');
+            $table->string('name');
             $table->dateTime('created_at');
             $table->dateTime('updated_at');
-            $table->string('name');
-            
         });
     }
 
@@ -29,6 +30,9 @@ class CategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('categories');
+        Schema::table('categories', function (Blueprint $table) {
+            $table->dropForeign('categories_table');
+        });
+        // Schema::dropIfExists('categories');
     }
 }

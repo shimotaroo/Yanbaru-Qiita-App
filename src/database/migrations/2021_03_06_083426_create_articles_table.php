@@ -14,15 +14,14 @@ class CreateArticlesTable extends Migration
     public function up()
     {
         Schema::create('articles', function (Blueprint $table) {
-            $table->bigIncrements('id');
-
+            $table->bigIncrements('use_id');
             $table->string('title');
             $table->int('category_id');
+            $table->string('summary');
             $table->string('url');
             $table->dateTime('created_at');
             $table->dateTime('updated_at');
             $table->dateTime('deleted_at');
-            $table->timestamps();
         });
     }
 
@@ -33,6 +32,7 @@ class CreateArticlesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('articles');
+       Schema::dropIfExists('articles');
+    
     }
 }
