@@ -14,8 +14,6 @@ class CreateUsersTable extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->biginteger('user_id')->unsigned()->nullable();
-            $table->foreign('user_id')->references('id')->on('users')->ondelete('cascade');
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('email')->unipue();
@@ -33,7 +31,7 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('uses', function (Blueprint $table) {
             $table->dropForeign('create_users_table');
         });
     }

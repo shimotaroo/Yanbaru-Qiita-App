@@ -14,8 +14,6 @@ class CategoriesTable extends Migration
     public function up()
     {
         Schema::create('categories', function (Blueprint $table) {
-            $table->biginteger('user_id')->unsigned()->nullable();
-            $table->foreign('user_id')->references('id')->on('users')->ondelete('cascade');
             $table->bigIncrements('id');
             $table->string('name');
             $table->dateTime('created_at');
@@ -33,6 +31,5 @@ class CategoriesTable extends Migration
         Schema::table('categories', function (Blueprint $table) {
             $table->dropForeign('categories_table');
         });
-        // Schema::dropIfExists('categories');
     }
 }

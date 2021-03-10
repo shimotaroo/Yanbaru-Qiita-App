@@ -14,14 +14,17 @@ class CreateArticlesTable extends Migration
     public function up()
     {
         Schema::create('articles', function (Blueprint $table) {
-            $table->bigIncrements('use_id');
+            $table->bigIncrements('id');
+            $table->bigInteger('user_id')->unsigned();
             $table->string('title');
-            $table->int('category_id');
+            $table->bigInteger('category_id');
             $table->string('summary');
             $table->string('url');
             $table->dateTime('created_at');
             $table->dateTime('updated_at');
             $table->dateTime('deleted_at');
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
@@ -32,7 +35,7 @@ class CreateArticlesTable extends Migration
      */
     public function down()
     {
-       Schema::dropIfExists('articles');
-    
+       Schema::dropForeign('create_articles_table');
+
     }
 }
