@@ -21,7 +21,7 @@ class CreateArticlesTable extends Migration
             $table->string('summary');
             $table->string('url')->index();
             $table->timestamps();
-            $table->softdeletes();
+            $table->softDeletes();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('categories_id')->references('id')->on('categories')->onDelete('cascade');
         });
@@ -34,6 +34,6 @@ class CreateArticlesTable extends Migration
      */
     public function down()
     {
-       Schema::drop('articles');
+       Schema::dropsoftdeletes('articles');
     }
 }
