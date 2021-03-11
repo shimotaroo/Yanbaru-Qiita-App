@@ -14,10 +14,9 @@ class CategoriesTable extends Migration
     public function up()
     {
         Schema::create('categories', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
             $table->string('name');
-            $table->dateTime('created_at');
-            $table->dateTime('updated_at');
+            $table->timestamps();
         });
     }
 
@@ -28,8 +27,6 @@ class CategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::table('categories', function (Blueprint $table) {
-            $table->dropForeign('categories_table');
-        });
+        Schema::drop('categories');
     }
 }
