@@ -34,6 +34,6 @@ class CreateArticlesTable extends Migration
      */
     public function down()
     {
-       Schema::dropsoftdeletes('articles');
+       Schema::drop('articles');
     }
 }
