@@ -17,13 +17,13 @@ class CreateArticlesTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->string('title');
-            $table->integer('categories_id')->unsigned()->index();
+            $table->integer('category_id')->unsigned()->index();
             $table->string('summary');
             $table->string('url')->index();
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('categories_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->foreign('category_id')->references('id')->on('category')->onDelete('cascade');
         });
     }
 
@@ -34,6 +34,6 @@ class CreateArticlesTable extends Migration
      */
     public function down()
     {
-       Schema::drop('articles');
+       Schema::dropIfExists('articles');
     }
 }
